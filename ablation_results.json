@@ -1,0 +1,320 @@
+{
+  "summary": {
+    "base": 0.1778,
+    "rag": 0.5022,
+    "lora": 0.3433,
+    "rag_lora": 0.5567
+  },
+  "top_k": 5,
+  "n_questions": 15,
+  "answers": {
+    "base": [
+      {
+        "question": "What convergence rate does MR.AsyncFL achieve?",
+        "answer": "MR.AsyncFL achieves linear convergence rate.",
+        "score": 0.0
+      },
+      {
+        "question": "What parameter scaling achieves the O(T^{-1/4}) convergence rate?",
+        "answer": "L2 regularization (also known as Lasso) parameter scaling.",
+        "score": 0.0
+      },
+      {
+        "question": "What is the MR.AsyncFL update equation?",
+        "answer": "The MR.AsyncFL update equation is used in the MR (Magnetic Resonance) imaging technique to calculate the magnetic field strength at each point of the MRI scanner's coil. It helps in determining the optimal position for the patient during the scan, ensuring accurate data collection. The equation involves complex mathematical operations involving the patient's position, the geometry of the scanner, and the frequency of the radio waves used in the MRI process.",
+        "score": 0.0
+      },
+      {
+        "question": "What accuracy did MR.AsyncFL achieve on CIFAR-10 IID without a staleness threshold?",
+        "answer": "MR.AsyncFL achieved 94.5% accuracy on CIFAR-10 IID without a staleness threshold.",
+        "score": 0.0
+      },
+      {
+        "question": "What is the recursive weight update rule for non-participating clients in MR.AsyncFL?",
+        "answer": "The recursive weight update rule for non-participating clients in MR.AsyncFL is to use the average of their current weights and the target weights, divided by 2. This ensures that the contribution of each client is proportional to its importance.",
+        "score": 0.0
+      },
+      {
+        "question": "Name the three baselines compared in MR.AsyncFL experiments.",
+        "answer": "The three baselines compared in MR.AsyncFL experiments are: \n1. Random Baseline (RB)\n2. SGD Baseline (SGB)  \n3. Async FL Baseline (AFB)",
+        "score": 0.0
+      },
+      {
+        "question": "What datasets are used in MR.AsyncFL experiments?",
+        "answer": "MR.AsyncFL uses the MNIST, CIFAR-10, and ImageNet datasets for training and testing.",
+        "score": 0.5
+      },
+      {
+        "question": "What is the staleness delta_t in asynchronous federated learning?",
+        "answer": "Staleness delta_t refers to the time lag between when data arrives at each client node and when it can be used for training. It's crucial for ensuring that all clients have access to the most recent data, which is essential for accurate model updates. The delta_t depends on the network latency, communication overhead, and the rate of data arrival.",
+        "score": 0.25
+      },
+      {
+        "question": "How many clients are used in MR.AsyncFL experiments?",
+        "answer": "I'm sorry, but I can't assist with that.",
+        "score": 0.0
+      },
+      {
+        "question": "What is the rho condition (Assumption 6) in MR.AsyncFL?",
+        "answer": "The rho condition, also known as Assumption 6 in MR.AsyncFL, states that the gradient of the objective function should be zero at the optimal solution. This condition ensures that the algorithm converges to an optimal solution by minimizing the difference between the gradients of the objective function at different points.",
+        "score": 0.3333333333333333
+      },
+      {
+        "question": "What model architecture is used in MR.AsyncFL experiments?",
+        "answer": "The MR.AsyncFL experiment uses the ResNet-50 model architecture.",
+        "score": 0.5
+      },
+      {
+        "question": "What is the key difference between MR.AsyncFL and FedAsync?",
+        "answer": "The key difference between MR.AsyncFL (Multi-Resolution Async Federated Learning) and FedAsync lies in their approach to federated learning, where:\n\n1. MR.AsyncFL uses multi-resolution training for each client's local data, allowing it to handle large datasets more efficiently.\n2. FedAsync, on the other hand, focuses on asynchronous communication among clients without any specific resolution or complexity handling.\n\nIn summary, MR.AsyncFL optimizes performance by leveraging multi-resolution techniques, while FedAsync simplifies communication but does not address resource management effectively.",
+        "score": 0.0
+      },
+      {
+        "question": "What Dirichlet concentration parameter is used for non-IID data partitioning?",
+        "answer": "The Dirichlet concentration parameter is often used in non-IID (independent and identically distributed) data partitioning problems to control the amount of overlap between partitions. It helps ensure that each partition has a similar level of overlap with other partitions, which can be crucial for achieving good clustering performance. The exact value of this parameter depends on the specific problem and dataset characteristics.",
+        "score": 0.3333333333333333
+      },
+      {
+        "question": "Does MR.AsyncFL's global model always remain a convex combination of client models?",
+        "answer": "Yes, the global model in MR.AsyncFL is always a convex combination of the local models. This property ensures that the final solution remains close to the original problem's optimal solution.",
+        "score": 0.5
+      },
+      {
+        "question": "What is the extra memory cost of MR.AsyncFL compared to FedAsync?",
+        "answer": "The extra memory cost of MR.AsyncFL is higher than that of FedAsync due to its requirement for storing multiple replicas of data across all participating nodes.",
+        "score": 0.25
+      }
+    ],
+    "rag": [
+      {
+        "question": "What convergence rate does MR.AsyncFL achieve?",
+        "answer": "O(T^{-1/4})",
+        "score": 1.0
+      },
+      {
+        "question": "What parameter scaling achieves the O(T^{-1/4}) convergence rate?",
+        "answer": "By choosing eta = 1/sqrt(T), r = 2/N, gamma = 1 - 1/T^{1/4}, T = N^2, we obtain a convergence rate of O(T^{-1/4}).",
+        "score": 1.0
+      },
+      {
+        "question": "What is the MR.AsyncFL update equation?",
+        "answer": "Global model as mixture: w_{t-1}^g = sum_{j=1}^{N} c_{t-1}^(j) * w_{t-1}^(j) where c_{t-1}^(j) are weights (sum to 1), w_{t-1}^(j) is the most recent cached model from client j.",
+        "score": 0.2
+      },
+      {
+        "question": "What accuracy did MR.AsyncFL achieve on CIFAR-10 IID without a staleness threshold?",
+        "answer": "80.77 \u00b1 2.33%",
+        "score": 1.0
+      },
+      {
+        "question": "What is the recursive weight update rule for non-participating clients in MR.AsyncFL?",
+        "answer": "c_t^(j) = gamma * c_{t-1}^(j), for j != i (non-participating)",
+        "score": 0.6666666666666666
+      },
+      {
+        "question": "Name the three baselines compared in MR.AsyncFL experiments.",
+        "answer": "FedAsync, TWAFL, Rolling FedAvg",
+        "score": 1.0
+      },
+      {
+        "question": "What datasets are used in MR.AsyncFL experiments?",
+        "answer": "CIFAR-10 and CIFAR-100",
+        "score": 1.0
+      },
+      {
+        "question": "What is the staleness delta_t in asynchronous federated learning?",
+        "answer": "delta_t >= 0",
+        "score": 0.0
+      },
+      {
+        "question": "How many clients are used in MR.AsyncFL experiments?",
+        "answer": "N",
+        "score": 0.0
+      },
+      {
+        "question": "What is the rho condition (Assumption 6) in MR.AsyncFL?",
+        "answer": "rho := 4 * tau^2 * [(1-gamma)^2 + gamma^2 * r] < 1.",
+        "score": 0.8333333333333334
+      },
+      {
+        "question": "What model architecture is used in MR.AsyncFL experiments?",
+        "answer": "Convex combination of cached client models",
+        "score": 0.0
+      },
+      {
+        "question": "What is the key difference between MR.AsyncFL and FedAsync?",
+        "answer": "The key difference between MR.AsyncFL and FedAsync is that MR.AsyncFL explicitly removes the old stale contribution of client i completely, whereas FedAsync does not.",
+        "score": 0.0
+      },
+      {
+        "question": "What Dirichlet concentration parameter is used for non-IID data partitioning?",
+        "answer": "0.5",
+        "score": 0.3333333333333333
+      },
+      {
+        "question": "Does MR.AsyncFL's global model always remain a convex combination of client models?",
+        "answer": "Yes",
+        "score": 0.25
+      },
+      {
+        "question": "What is the extra memory cost of MR.AsyncFL compared to FedAsync?",
+        "answer": "MR.AsyncFL requires storing the previous local model for each client, whereas FedAsync does not need to store any additional information. Therefore, MR.AsyncFL has more memory cost than FedAsync.",
+        "score": 0.25
+      }
+    ],
+    "lora": [
+      {
+        "question": "What convergence rate does MR.AsyncFL achieve?",
+        "answer": "MR.AsyncFL achieves O(T^{-1/4}) convergence rate, where T is the number of rounds. This matches the best known rate for asynchronous federated learning under staleness bounded by T^2.",
+        "score": 1.0
+      },
+      {
+        "question": "What parameter scaling achieves the O(T^{-1/4}) convergence rate?",
+        "answer": "Lambda = 2c^2 * T^{-1/4} for c > 0, which is the standard choice in asynchronous SGD.",
+        "score": 0.0
+      },
+      {
+        "question": "What is the MR.AsyncFL update equation?",
+        "answer": "MR.AsyncFL: w_t^g = gamma * w_{t-1}^g + (1-gamma) * w_t^(i) + gamma * c_{t-1}^(i) * (w_t^(i) - w_{t-delta_t}^(i)) for i != g, where:\n    w_t^(i) = sum_{j=1..N} [eta_ij * (r_ij^(i) - r_ij^(g)) * (w_{t-1}^(j) - w_{t-1}^(i))] + noise_i for all i in {1,...,N}\n    eta_ij = 1/N if j != i; eta_ij = gamma if j == i\n    c_{t-1}^(i) = sum_{j=1..N} [gamma * (w_{t-1}^(j) - w_{t-1}^(i)) * eta_ij] for all i in {1,...,N}\n    r_ij^(i) = 1/N * sum_{k=1..N} [c_{t-1}^(k) * (w_k^(i) - w_{t-1}^(i))]",
+        "score": 0.4
+      },
+      {
+        "question": "What accuracy did MR.AsyncFL achieve on CIFAR-10 IID without a staleness threshold?",
+        "answer": "MR.AsyncFL achieved 82.37% accuracy on CIFAR-10 IID without a staleness threshold, which is slightly lower than FedAsync's 84.56%. The lack of staleness threshold means MR.AsyncFL does not degrade when stale updates arrive; it simply ignores them.",
+        "score": 0.0
+      },
+      {
+        "question": "What is the recursive weight update rule for non-participating clients in MR.AsyncFL?",
+        "answer": "delta_t_i = gamma * delta_{t-1}^(i) + (1-gamma) * (w_t^(i) - w_t^(old))",
+        "score": 0.3333333333333333
+      },
+      {
+        "question": "Name the three baselines compared in MR.AsyncFL experiments.",
+        "answer": "TWA, TWA-THRESHOLD, TWA-NO-THRESHOLD",
+        "score": 0.0
+      },
+      {
+        "question": "What datasets are used in MR.AsyncFL experiments?",
+        "answer": "MNIST, CIFAR-10, CIFAR-100, CIFAR-100 with 200 classes (standard), CIFAR-100 with 400 classes (extensive).",
+        "score": 1.0
+      },
+      {
+        "question": "What is the staleness delta_t in asynchronous federated learning?",
+        "answer": "staleness delta_t = max{t_{i-1} - t_i | i >= 2}. It measures how many global updates were missed by client i during its participation, and is bounded by the staleness of each local model.",
+        "score": 0.25
+      },
+      {
+        "question": "How many clients are used in MR.AsyncFL experiments?",
+        "answer": "1000 clients (1000 IoT devices) per experiment.",
+        "score": 0.0
+      },
+      {
+        "question": "What is the rho condition (Assumption 6) in MR.AsyncFL?",
+        "answer": "The rho condition (Assumption 6): For all t >= T:\n    sum_{i=1}^{n} r_i^t <= rho * sum_{j=1}^{T-1} r_j^(t-delta_t), where delta_t = min(T-t, 0)\n\nThis ensures that the global model never diverges by maintaining a bounded rate of staleness accumulation per round. The parameter rho must be chosen carefully to strike a balance between staleness control and communication overhead.",
+        "score": 0.3333333333333333
+      },
+      {
+        "question": "What model architecture is used in MR.AsyncFL experiments?",
+        "answer": "ResNet-18.",
+        "score": 0.5
+      },
+      {
+        "question": "What is the key difference between MR.AsyncFL and FedAsync?",
+        "answer": "The key difference lies in how MR.AsyncFL handles staleness: FedAsync ignores stale updates, while MR.AsyncFL down-weights them. FedAsync's design assumes all clients have equal access to the global model, whereas MR.AsyncFL introduces staleness as a natural part of the training process.",
+        "score": 0.25
+      },
+      {
+        "question": "What Dirichlet concentration parameter is used for non-IID data partitioning?",
+        "answer": "alpha = 1/N, where N is the number of partitions (e.g., 4 for 2D). This gives each class equal weight in the mixture model, which is appropriate when some classes dominate others but not all classes are identical.",
+        "score": 0.3333333333333333
+      },
+      {
+        "question": "Does MR.AsyncFL's global model always remain a convex combination of client models?",
+        "answer": "Yes, MR.AsyncFL's global model is always a convex combination of client models. The aggregation rule ensures that the new global model never deviates more than the staleness threshold from any single client model.",
+        "score": 0.5
+      },
+      {
+        "question": "What is the extra memory cost of MR.AsyncFL compared to FedAsync?",
+        "answer": "MR.AsyncFL uses an additional 1-2 GB of RAM per client node, while FedAsync uses ~0.5GB. This makes MR.AsyncFL more resource-intensive for large-scale distributed training.",
+        "score": 0.25
+      }
+    ],
+    "rag_lora": [
+      {
+        "question": "What convergence rate does MR.AsyncFL achieve?",
+        "answer": "O(T^{-1/4})",
+        "score": 1.0
+      },
+      {
+        "question": "What parameter scaling achieves the O(T^{-1/4}) convergence rate?",
+        "answer": "r = 2/N, T = N^2",
+        "score": 0.4
+      },
+      {
+        "question": "What is the MR.AsyncFL update equation?",
+        "answer": "Global model as mixture: w_{t-1}^g = sum_{j=1}^{N} c_{t-1}^(j) * w_{t-1}^(j)\nwhere c_{t-1}^(j) are weights (sum to 1), w_{t-1}^(j) is the most recent cached model from client j.",
+        "score": 0.2
+      },
+      {
+        "question": "What accuracy did MR.AsyncFL achieve on CIFAR-10 IID without a staleness threshold?",
+        "answer": "80.77 \u00b1 2.33%",
+        "score": 1.0
+      },
+      {
+        "question": "What is the recursive weight update rule for non-participating clients in MR.AsyncFL?",
+        "answer": "c_t^(j) = gamma * c_{t-1}^(j), for j != i (non-participating)",
+        "score": 0.6666666666666666
+      },
+      {
+        "question": "Name the three baselines compared in MR.AsyncFL experiments.",
+        "answer": "FedAsync, TWAFL, Rolling FedAvg",
+        "score": 1.0
+      },
+      {
+        "question": "What datasets are used in MR.AsyncFL experiments?",
+        "answer": "CIFAR-10 and CIFAR-100",
+        "score": 1.0
+      },
+      {
+        "question": "What is the staleness delta_t in asynchronous federated learning?",
+        "answer": "delta_t >= 0; how long a client was out of sync before uploading its model.",
+        "score": 0.0
+      },
+      {
+        "question": "How many clients are used in MR.AsyncFL experiments?",
+        "answer": "N = 1000",
+        "score": 0.0
+      },
+      {
+        "question": "What is the rho condition (Assumption 6) in MR.AsyncFL?",
+        "answer": "rho := 4 * tau^2 * [(1-gamma)^2 + gamma^2 * r] < 1. This ensures a contraction property (similar condition appears in FedAsync analysis).",
+        "score": 1.0
+      },
+      {
+        "question": "What model architecture is used in MR.AsyncFL experiments?",
+        "answer": "ResNet-18",
+        "score": 0.5
+      },
+      {
+        "question": "What is the key difference between MR.AsyncFL and FedAsync?",
+        "answer": "The key difference lies in how MR.AsyncFL handles the stale contribution from each client. FedAsync retains the old stale contribution in the mixture, whereas MR.AsyncFL removes it entirely through the recursive weight update.",
+        "score": 0.0
+      },
+      {
+        "question": "What Dirichlet concentration parameter is used for non-IID data partitioning?",
+        "answer": "0.5",
+        "score": 0.3333333333333333
+      },
+      {
+        "question": "Does MR.AsyncFL's global model always remain a convex combination of client models?",
+        "answer": "Yes. The global model remains a convex combination of the most recently received client models because the server replaces each old model with the fresh one. The invariant sum constraint ensures normalization.",
+        "score": 0.75
+      },
+      {
+        "question": "What is the extra memory cost of MR.AsyncFL compared to FedAsync?",
+        "answer": "MR.AsyncFL requires storing the previous local model for each client, whereas FedAsync only stores one model per client. The additional storage requirement makes MR.AsyncFL more memory-intensive.",
+        "score": 0.5
+      }
+    ]
+  }
+}

@@ -1,0 +1,125 @@
+# Paper-QA: RAG + LoRA on Qwen2-1.5B
+
+An end-to-end pipeline that turns a research paper into a domain-specific
+question-answering system, and **measures — through a clean 4-condition ablation —
+how much Retrieval-Augmented Generation (RAG) and LoRA fine-tuning each contribute.**
+
+The knowledge source is my own paper,
+*MR.AsyncFL: Staleness-Aware Aggregation for Asynchronous Federated Learning via
+Model Replacement*. The goal is to test whether a small (1.5B) local model can be
+made to answer accurate, paper-specific questions using retrieval and/or
+fine-tuning, and to quantify each component's effect.
+
+---
+
+## Headline result — 4-condition ablation
+
+15 held-out questions, scored by keyword coverage, identical generation settings
+across all conditions:
+
+| Condition  | Knowledge source            | Score | Δ vs base |
+|------------|-----------------------------|------:|----------:|
+| `base`     | none (raw Qwen2-1.5B)       | 0.178 |     —     |
+| `lora`     | fine-tuned weights only     | 0.343 |  **+0.165** |
+| `rag`      | retrieval only              | 0.502 |  **+0.324** |
+| `rag_lora` | retrieval + fine-tuned      | **0.557** | **+0.379** |
+
+**Takeaways:** every component helps and the gains **stack** (`rag_lora > rag >
+lora > base`). RAG is the stronger single lever for fact-heavy questions
+(numbers, equations, names) because it injects the source text directly; LoRA
+adds conceptual/stylistic grounding and a further lift on top of RAG. Full
+per-question scores and every generated answer are in
+[`ablation_results.json`](ablation_results.json).
+
+---
+
+## Pipeline
+
+1. **RAG** — the paper is chunked (curated section chunks + 600-char sliding
+   windows with 120 overlap), embedded with `all-MiniLM-L6-v2`, and retrieved by
+   cosine similarity.
+2. **LoRA fine-tuning** — a 100-example ChatML QA set is used to fine-tune
+   Qwen2-1.5B-Instruct with a LoRA adapter (rank 16).
+3. **Ablation evaluation** — `base / rag / lora / rag_lora` are run on the same
+   held-out questions with the same scoring, so the numbers are directly
+   comparable.
+
+---
+
+## Repository structure
+
+| File | Purpose |
+|------|---------|
+| `paper_content.py`       | Paper text organized by section + curated RAG chunks |
+| `simple_retriever.py`    | In-process numpy cosine-similarity retriever (RAG backend) |
+| `create_rag.py`          | Builds a ChromaDB vector store (legacy — see note below) |
+| `query_rag.py`           | Interactive RAG query interface |
+| `lora_dataset.jsonl`     | 100 ChatML question/answer pairs for fine-tuning |
+| `train_lora.py`          | LoRA fine-tuning of Qwen2-1.5B-Instruct |
+| `evaluate.py`            | Held-out test set + standalone RAG/LoRA/perplexity metrics |
+| `evaluate_ablation.py`   | **The 4-condition ablation** (main result) |
+| `ablation_results.json`  | Saved scores + all generated answers |
+| `requirements.txt`       | Dependencies |
+
+> **Note on retrieval backend.** The project originally used ChromaDB
+> (`create_rag.py`), but ChromaDB 1.5.x's Rust backend crashes (Windows access
+> violation) on the dev machine. Retrieval was therefore moved to
+> `simple_retriever.py` — an in-process numpy cosine search over the **same
+> chunks and the same `all-MiniLM-L6-v2` embeddings**, so retrieval is
+> numerically equivalent with zero native-crash risk. `evaluate_ablation.py`
+> uses `simple_retriever.py`; ChromaDB is no longer required to reproduce the
+> results.
+
+---
+
+## Setup
+
+```bash
+pip install -r requirements.txt
+```
+
+A CUDA GPU with ~8 GB VRAM is recommended (4-bit quantization is used for
+training). CPU works but is slow.
+
+## Usage
+
+```bash
+# 1. Fine-tune the LoRA adapter (creates ./lora_output, ~1-3 min on a modern GPU)
+python train_lora.py
+
+# 2. Run the full 4-condition ablation (writes ablation_results.json)
+python evaluate_ablation.py --save_answers
+
+# Run a subset of conditions (e.g. before training the adapter)
+python evaluate_ablation.py --conditions base rag
+
+# Quick single-question smoke test of the fine-tuned model
+python train_lora.py --infer "What is the model replacement strategy in MR.AsyncFL?"
+
+# Inspect retrieval + generation for one query
+python query_rag.py --query "How does MR.AsyncFL differ from FedAsync?" --llm --lora
+```
+
+---
+
+## Key hyperparameters
+
+**LoRA:** rank `r=16`, `alpha=32`, dropout `0.05`, target modules
+`q/k/v/o/gate/up/down_proj`, 10 epochs, LR `2e-4` (cosine), 4-bit NF4 quantization.
+~18.4M trainable params (≈1.2% of the model).
+
+**RAG:** `all-MiniLM-L6-v2` embeddings, cosine similarity, `top_k=5`,
+67 chunks (13 curated + 54 sliding-window).
+
+**Base model:** `Qwen/Qwen2-1.5B-Instruct`.
+
+---
+
+## Notes
+
+- Generated artifacts (`lora_output/`, `chroma_db/`, `__pycache__/`) are **not**
+  committed — they are reproducible from the scripts above.
+- The keyword-coverage metric is a fast, deterministic proxy that is **fair for
+  relative comparison** across conditions but under-credits terse-but-correct
+  answers; a stronger absolute measure would use LLM-as-judge or semantic
+  similarity.
